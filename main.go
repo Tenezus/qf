@@ -11,15 +11,15 @@ import (
 type quote struct{
 	Id      int    `json: "id"`
 	Author  string `json: "author"`
-	content string `json: "content"`
+	Content string `json: "content"`
 }
 
 var quotes = []quote{
-	{Id: 1, Author: "Anabella", content: "life is too short, i can't waste my time for them"},
-	{Id: 2, Author: "Antoine de saint exuperi", content: "No stress, stress them"},
-	{Id: 3, Author: "BITHO Essowassam Fortune", content: "Plus rien ne m'etonnera, a part s'il changent"},
-	{Id: 4, Author: "Camille de Kara", content: "If they hurt you, let hurt them"},
-	{Id: 5, Author: "Phantom", content: "coder dans l'ombre', illuminer le monde"},
+	{Id: 1, Author: "Anabella", Content: "life is too short, i can't waste my time for them"},
+	{Id: 2, Author: "Antoine de saint exuperi", Content: "No stress, stress them"},
+	{Id: 3, Author: "BITHO Essowassam Fortune", Content: "Plus rien ne m'etonnera, a part s'il changent"},
+	{Id: 4, Author: "Camille de Kara", Content: "If they hurt you, let hurt them"},
+	{Id: 5, Author: "Phantom", Content: "coder dans l'ombre', illuminer le monde"},
 }
 
 func getAllQuotes(c *gin.Context){
