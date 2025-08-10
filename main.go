@@ -22,8 +22,18 @@ var quotes []Quotes
 
 //postgresql://postgres:[YOUR-PASSWORD]@db.qxfmtqrnjdfiptrfpzsq.supabase.co:5432/postgres
 
-func selectAllRows(conn *pgx.Conn) (pgx.Rows, error) {
+func getAllQuotes(c *gin.Context) {
 	//select all quotes [id, content, author, created_at, like]
+	//connection to the postgres database on supabase
+	
+	var conn *pgx.Conn
+
+	conn, err := pgx.Connect(context.Background(), "postgresql://postgres.qxfmtqrnjdfiptrfpzsq:jevaisalecole@aws-0-eu-north-1.pooler.supabase.com:6543/postgres")
+	if err != nil {
+		log.Fatalf("failed to connect to the database: %v", err)
+	}
+	defer conn.Close(context.Background())
+
 	rows, err := conn.Query(context.Background(), `select "id", "content", "author", "created_at","like" from quote;`, pgx.QueryExecModeSimpleProtocol)
 	if err != nil {
 		log.Fatal(err)
@@ -44,32 +54,10 @@ func selectAllRows(conn *pgx.Conn) (pgx.Rows, error) {
 		//quote := quote{Id: id, Content: content, Author: author, Created_at: created_at, Like: like}
 		quotes = append(quotes, q)
 	}
-	return rows, err
-}
-
-func getAllQuotes(c *gin.Context) {
 	c.IndentedJSON(200, quotes)
 }
 
 func main() {
-
-	//connection to the postgres database on supabase
-	conn, err := pgx.Connect(context.Background(), "postgresql://postgres.qxfmtqrnjdfiptrfpzsq:jevaisalecole@aws-0-eu-north-1.pooler.supabase.com:6543/postgres")
-	if err != nil {
-		log.Fatalf("failed to connect to the database: %v", err)
-	}
-	
-	defer conn.Close(context.Background())
-
-	//version of connection
-	var version string
-	if err := conn.QueryRow(context.Background(), "SELECT version()", pgx.QueryExecModeSimpleProtocol).Scan(&version); err != nil {
-		log.Fatalf("Query failed: %v", err)
-	}
-	log.Println("Connected to ", version)
-
-	//select all rows
-	selectAllRows(conn)
 
 	//initialize a router
 	router := gin.Default()
