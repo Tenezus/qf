@@ -55,6 +55,8 @@ func getAllQuotes(c *gin.Context) {
 		quotes = append(quotes, q)
 	}
 	c.IndentedJSON(200, quotes)
+	//clear the datas in the slice
+	quotes = quotes[:0]
 }
 
 func main() {
